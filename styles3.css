@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f8f9fa;
+}
+.container {
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 800px;
+}
+.header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.terms {
+    margin-top: 10px;
+}
+footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #777;
+}
+/* Estilo para impressão */
+@media print {
+    body {
+        background-color: white;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+    }
+    .btn {
+        display: none;
+    }
+    .terms p {
+        font-size: 12px; /* Ajusta o tamanho da fonte para caber mais texto */
+        line-height: 1.4;
+    }
+}
