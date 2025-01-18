@@ -132,7 +132,7 @@ printButton.addEventListener('click', () => {
         carrocelas: document.getElementById('carrocelas').value
     };
     localStorage.setItem('timerForPrint', JSON.stringify(lastTimerData));
-    window.open('index3.html', '_blank');
+    window.open('impressão.html', '_blank');
 });
 
 window.addEventListener('DOMContentLoaded', loadTimers);
