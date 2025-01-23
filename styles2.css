@@ -20,6 +20,9 @@ header {
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav ul {
@@ -27,7 +30,6 @@ nav ul {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center;
 }
 
 nav ul li {
@@ -41,16 +43,19 @@ nav ul li a {
     font-weight: bold;
 }
 
+#searchContainer {
+    display: flex;
+    align-items: center;
+}
+
+#searchCode {
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+}
+
 footer {
     margin-top: 30px;
     text-align: center;
     color: #777;
-}
-
-form {
-    margin-bottom: 30px;
-}
-
-form .form-control {
-    margin-bottom: 15px;
 }
