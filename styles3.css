@@ -42,4 +42,12 @@ footer {
         font-size: 12px; /* Ajusta o tamanho da fonte para caber mais texto */
         line-height: 1.4;
     }
+    .page-break {
+        page-break-before: always;
+    }
+    .code-section {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
 }
