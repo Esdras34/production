@@ -1,138 +1,182 @@
+// Carregar cronômetros do localStorage
+// Elementos da página
 const timersContainer = document.getElementById('timersContainer');
 const addTimerButton = document.getElementById('addTimer');
-const rentalForm = document.getElementById('rentalForm');
+const searchInput = document.getElementById('searchCode');
 const printButton = document.getElementById('printButton');
 
+// Função para gerar código único
+const generateUniqueCode = () => {
+    return 'LOC' + Date.now() + Math.floor(Math.random() * 1000);
+};
+
+// Função para salvar cronômetros no localStorage
 const saveTimers = () => {
     const timers = Array.from(document.querySelectorAll('.timer')).map(timer => ({
         id: timer.dataset.id,
-        time: timer.dataset.time,
-        cycles: timer.dataset.cycles,
+        startTime: timer.dataset.startTime,  // Salvar horário inicial
         nome: timer.dataset.nome,
         cpf: timer.dataset.cpf,
         rg: timer.dataset.rg,
         celular: timer.dataset.celular,
+        horarioEntrada: timer.dataset.horarioEntrada,
         horarioSaida: timer.dataset.horarioSaida,
-        horarioRetorno: timer.dataset.horarioRetorno,
         valor: timer.dataset.valor,
         formaPagamento: timer.dataset.formaPagamento,
         bicicletas: timer.dataset.bicicletas,
         extensoes: timer.dataset.extensoes,
         carrocelas: timer.dataset.carrocelas,
-        dataCadastro: timer.dataset.dataCadastro
+        codigo: timer.dataset.codigo
     }));
     localStorage.setItem('timers', JSON.stringify(timers));
 };
 
+// Carregar cronômetros do localStorage
 const loadTimers = () => {
     const timers = JSON.parse(localStorage.getItem('timers')) || [];
-    timers.forEach(timer => createTimer(timer.id, parseInt(timer.time), parseInt(timer.cycles), timer));
+    timers.forEach(timer => {
+        // Recalcular tempo baseado no horário de início
+        const now = Math.floor(Date.now() / 1000);
+        const elapsedTime = now - timer.startTime;
+        timer.time = elapsedTime;
+        createTimer(timer);
+    });
 };
 
-const createTimer = (id = Date.now(), time = 0, cycles = 0, data = {}, autoStart = false) => {
+// Criar novo cronômetro
+const createTimer = (data) => {
     const timerDiv = document.createElement('div');
     timerDiv.classList.add('timer');
-    timerDiv.dataset.id = id;
-    Object.assign(timerDiv.dataset, data);
+    timerDiv.dataset.id = data.id || Date.now();
+    timerDiv.dataset.startTime = data.startTime || Math.floor(Date.now() / 1000);
+    timerDiv.dataset.nome = data.nome;
+    timerDiv.dataset.cpf = data.cpf;
+    timerDiv.dataset.rg = data.rg;
+    timerDiv.dataset.celular = data.celular;
+    timerDiv.dataset.horarioEntrada = data.horarioEntrada;
+    timerDiv.dataset.horarioSaida = data.horarioSaida;
+    timerDiv.dataset.valor = data.valor;
+    timerDiv.dataset.formaPagamento = data.formaPagamento;
+    timerDiv.dataset.bicicletas = data.bicicletas;
+    timerDiv.dataset.extensoes = data.extensoes;
+    timerDiv.dataset.carrocelas = data.carrocelas;
+    timerDiv.dataset.codigo = data.codigo || generateUniqueCode();
 
-    const clockId = `clock-${id}`;
-    const cycleId = `cycle-${id}`;
-    const dataCadastro = new Date().toLocaleDateString();  // Captura a data atual
+    const now = Math.floor(Date.now() / 1000);
+    const elapsedTime = now - timerDiv.dataset.startTime;
 
-    timerDiv.innerHTML = ` 
+    timerDiv.innerHTML = `
+        <p><strong>Código:</strong> ${timerDiv.dataset.codigo}</p>
         <p><strong>Nome:</strong> ${data.nome}</p>
         <p><strong>CPF:</strong> ${data.cpf}</p>
-        <p><strong>RG:</strong> ${data.rg}</p>
         <p><strong>Celular:</strong> ${data.celular}</p>
+        <p><strong>Horário de Entrada:</strong> ${data.horarioEntrada}</p>
         <p><strong>Horário de Saída:</strong> ${data.horarioSaida}</p>
-        <p><strong>Horário de Retorno:</strong> ${data.horarioRetorno}</p>
         <p><strong>Valor a Pagar:</strong> R$ ${parseFloat(data.valor).toFixed(2)}</p>
         <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
         <p><strong>Número de Bicicletas:</strong> ${data.bicicletas}</p>
         <p><strong>Extensões:</strong> ${data.extensoes}</p>
         <p><strong>Carrocelas:</strong> ${data.carrocelas}</p>
-        <p><strong>Data de Cadastro:</strong> ${dataCadastro}</p>
-        <p><strong>Relógio:</strong> <span id="${clockId}">${formatTime(time)}</span></p>
-        <p><strong>Ciclos de 30 minutos:</strong> <span id="${cycleId}">${cycles}</span></p>
+        <p><strong>Tempo:</strong> <span class="clock">${formatTime(elapsedTime)}</span></p>
         <button class="btn btn-danger btn-sm delete">Excluir</button>
     `;
 
     timersContainer.appendChild(timerDiv);
 
-    let interval = null;
+    // Atualizar cronômetro a cada segundo
+    let interval = setInterval(() => {
+        const now = Math.floor(Date.now() / 1000);
+        const elapsedTime = now - timerDiv.dataset.startTime;
+        timerDiv.querySelector('.clock').textContent = formatTime(elapsedTime);
+        saveTimers();
+    }, 1000);
 
-    const updateDisplay = () => {
-        document.getElementById(clockId).textContent = formatTime(time);
-        document.getElementById(cycleId).textContent = cycles;
-    };
-
-    const startTimer = () => {
-        if (interval) return;
-        interval = setInterval(() => {
-            time++;
-            if (time >= 1800) {
-                time = 0;
-                cycles++;
-            }
-            updateDisplay();
-            saveTimers();
-        }, 1000);
-    };
-
-    const deleteTimer = () => {
+    // Excluir cronômetro
+    timerDiv.querySelector('.delete').addEventListener('click', () => {
         clearInterval(interval);
         timerDiv.remove();
         saveTimers();
-    };
+    });
 
-    timerDiv.querySelector('.delete').addEventListener('click', deleteTimer);
-
-    if (autoStart) startTimer();
-    updateDisplay();
+    saveTimers();
 };
 
+// Formatar tempo (HH:MM:SS)
 const formatTime = (time) => {
-    const hours = Math.floor(time / 3600).toString().padStart(2, '0');
-    const minutes = Math.floor((time % 3600) / 60).toString().padStart(2, '0');
-    const seconds = (time % 60).toString().padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-addTimerButton.addEventListener('click', () => {
-    const formData = {
-        nome: document.getElementById('nome').value,
-        cpf: document.getElementById('cpf').value,
-        rg: document.getElementById('rg').value,
-        celular: document.getElementById('celular').value,
-        horarioSaida: document.getElementById('horarioSaida').value,
-        horarioRetorno: document.getElementById('horarioRetorno').value,
-        valor: document.getElementById('valor').value,
-        formaPagamento: document.getElementById('formaPagamento').value,
-        bicicletas: document.getElementById('bicicletas').value,
-        extensoes: document.getElementById('extensoes').value,
-        carrocelas: document.getElementById('carrocelas').value
-    };
-    createTimer(undefined, 0, 0, formData, true);
-    rentalForm.reset();
+// Filtrar locatários pelo código
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    document.querySelectorAll('.timer').forEach(timer => {
+        const codigo = timer.dataset.codigo.toLowerCase();
+        timer.style.display = codigo.includes(query) ? '' : 'none';
+    });
 });
 
-// Evento do botão de Impressão
+// Adicionar cronômetro ao clicar no botão
+addTimerButton.addEventListener('click', () => {
+    const nome = document.getElementById('nome').value;
+    const cpf = document.getElementById('cpf').value;
+    const rg = document.getElementById('rg').value;
+    const celular = document.getElementById('celular').value;
+    const horarioEntrada = document.getElementById('horarioEntrada').value;
+    const horarioSaida = document.getElementById('horarioSaida').value;
+    const valor = document.getElementById('valor').value;
+    const formaPagamento = document.getElementById('formaPagamento').value;
+    const bicicletas = document.getElementById('bicicletas').value;
+    const extensoes = document.getElementById('extensoes').value;
+    const carrocelas = document.getElementById('carrocelas').value;
+
+    createTimer({
+        nome,
+        cpf,
+        rg,
+        celular,
+        horarioEntrada,
+        horarioSaida,
+        valor,
+        formaPagamento,
+        bicicletas,
+        extensoes,
+        carrocelas,
+        startTime: Math.floor(Date.now() / 1000),
+        codigo: generateUniqueCode()
+    });
+
+    // Limpar formulário após adicionar
+    document.getElementById('rentalForm').reset();
+});
+
+// Função para preparar os dados para impressão
+const preparePrintData = () => {
+    const timers = Array.from(document.querySelectorAll('.timer')).map(timer => ({
+        codigo: timer.dataset.codigo,
+        nome: timer.dataset.nome,
+        cpf: timer.dataset.cpf,
+        rg: timer.dataset.rg,
+        celular: timer.dataset.celular,
+        horarioEntrada: timer.dataset.horarioEntrada,
+        horarioSaida: timer.dataset.horarioSaida,
+        valor: timer.dataset.valor,
+        formaPagamento: timer.dataset.formaPagamento,
+        bicicletas: timer.dataset.bicicletas,
+        extensoes: timer.dataset.extensoes,
+        carrocelas: timer.dataset.carrocelas
+    }));
+
+    localStorage.setItem('printData', JSON.stringify(timers));
+};
+
+// Redirecionar para página de impressão
 printButton.addEventListener('click', () => {
-    const lastTimerData = {
-        nome: document.getElementById('nome').value,
-        cpf: document.getElementById('cpf').value,
-        rg: document.getElementById('rg').value,
-        celular: document.getElementById('celular').value,
-        horarioSaida: document.getElementById('horarioSaida').value,
-        horarioRetorno: document.getElementById('horarioRetorno').value,
-        valor: document.getElementById('valor').value,
-        formaPagamento: document.getElementById('formaPagamento').value,
-        bicicletas: document.getElementById('bicicletas').value,
-        extensoes: document.getElementById('extensoes').value,
-        carrocelas: document.getElementById('carrocelas').value
-    };
-    localStorage.setItem('timerForPrint', JSON.stringify(lastTimerData));
+    preparePrintData();
     window.open('impressão.html', '_blank');
 });
 
-window.addEventListener('DOMContentLoaded', loadTimers);
+// Carregar cronômetros ao abrir a página
+loadTimers();
