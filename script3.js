@@ -47,7 +47,7 @@
             <br>
             <h4>Eu, ${nome} declaro que estou ciente de todos os termos e condições do aluguel de bicicletas e equipamentos, e aceito os termos de responsabilidade descritos acima. <br> ASSINATURA:_________________________________________.</h4>
 
-            <br>
+            <br><br>
         `;
 
         document.getElementById('rentalInfo').innerHTML = rentalInfo;
