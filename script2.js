@@ -1,4 +1,6 @@
-// Carregar cronômetros do localStorage
+
+
+
 // Elementos da página
 const timersContainer = document.getElementById('timersContainer');
 const addTimerButton = document.getElementById('addTimer');
@@ -14,7 +16,7 @@ const generateUniqueCode = () => {
 const saveTimers = () => {
     const timers = Array.from(document.querySelectorAll('.timer')).map(timer => ({
         id: timer.dataset.id,
-        startTime: timer.dataset.startTime,  // Salvar horário inicial
+        startTime: timer.dataset.startTime,
         nome: timer.dataset.nome,
         cpf: timer.dataset.cpf,
         rg: timer.dataset.rg,
@@ -35,7 +37,6 @@ const saveTimers = () => {
 const loadTimers = () => {
     const timers = JSON.parse(localStorage.getItem('timers')) || [];
     timers.forEach(timer => {
-        // Recalcular tempo baseado no horário de início
         const now = Math.floor(Date.now() / 1000);
         const elapsedTime = now - timer.startTime;
         timer.time = elapsedTime;
@@ -83,7 +84,6 @@ const createTimer = (data) => {
 
     timersContainer.appendChild(timerDiv);
 
-    // Atualizar cronômetro a cada segundo
     let interval = setInterval(() => {
         const now = Math.floor(Date.now() / 1000);
         const elapsedTime = now - timerDiv.dataset.startTime;
@@ -109,13 +109,32 @@ const formatTime = (time) => {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-// Filtrar locatários pelo código
+// Filtrar locatários pelo código e rolar até o card correspondente
 searchInput.addEventListener('input', () => {
-    const query = searchInput.value.toLowerCase();
+    const query = searchInput.value.trim().toLowerCase();
+    let found = false;
+
     document.querySelectorAll('.timer').forEach(timer => {
         const codigo = timer.dataset.codigo.toLowerCase();
-        timer.style.display = codigo.includes(query) ? '' : 'none';
+
+        if (codigo.includes(query)) {
+            timer.style.display = '';  // Garante que o item apareça
+            if (!found) {
+                timer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                timer.classList.add('highlight');
+                setTimeout(() => timer.classList.remove('highlight'), 2000);
+                found = true;  // Garante que só role para o primeiro encontrado
+            }
+        } else {
+            timer.style.display = 'none';
+        }
     });
+
+    if (query === '') {
+        document.querySelectorAll('.timer').forEach(timer => {
+            timer.style.display = '';
+        });
+    }
 });
 
 // Adicionar cronômetro ao clicar no botão
@@ -148,7 +167,6 @@ addTimerButton.addEventListener('click', () => {
         codigo: generateUniqueCode()
     });
 
-    // Limpar formulário após adicionar
     document.getElementById('rentalForm').reset();
 });
 
@@ -180,3 +198,4 @@ printButton.addEventListener('click', () => {
 
 // Carregar cronômetros ao abrir a página
 loadTimers();
+
