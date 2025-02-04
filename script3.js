@@ -38,17 +38,16 @@
                 COBRAMOS O TEMPO EXCEDIDO NA DEVOLUÇÃO. NÃO NOS RESPONSABILIZAMOS POR DANOS CAUSADOS A TERCEIROS.<br>
                 COBRAMOS POR PNEU FURADO R$10,00.<br>
                 NÃO FAZEMOS DEVOLUÇÃO DE PAGAMENTO, PROIBIDO CONDUZIR EM ESTADO DE EMBRIAGUEZ.<br>
-                ANDAR SOMENTE PELA CICLOVIA EM UMA VELOCIDADE DE NO MÍNIMO 10KM/H, SOB PENA DE PAGAR MULTA DE ....<br>
+                ANDAR SOMENTE PELA CICLOVIA EM UMA VELOCIDADE DE NO MÍNIMO 10KM/H, SOB PENA DE PAGAR MULTA DE R$50,00<BR>
                 CASO INFRIJA A LEI MUNICIPAL 1869 DE 07/12/2017 PRAIA GRANDE.<br>
                 SORRIA, VOCÊ ESTÁ SENDO OBSERVADO, BOM PASSEIO!<br><br>
                 ASSUMO, PORTANTO, TODO E QUAISQUER DANOS OU ACIDENTES CAUSADOS AO VEÍCULO, ENQUANTO ESTIVER SOB MINHA RESPONSABILIDADE.<br>
                 ASSIM COMO ME RESPONSABILIZO QUANTO AO RESSARCIMENTO NO CASO DE ROUBO, FURTO E DANOS DIRETOS OU INDIRETOS, TANTO A TERCEIROS QUANTO AO PATRIMÔNIO PÚBLICO, RESPONDENDO SOB AS PENAS DA LEI E ISENTANDO O LOCADOR E PROPRIETÁRIO DAS BICICLETAS (VIC EKO BIKES) CNPJ 41.385.349./0001-79 CIVIL E CRIMINALMENTE DE TODA E QUALQUER RESPONSABILIDADE.
             </h4>
-            <p>Eu, ${nome} declaro que estou ciente de todos os termos e condições do aluguel de bicicletas e equipamentos, e aceito os termos de responsabilidade descritos acima. <br> ASSINATURA:_________________________________________.</p>
+            <br>
+            <h4>Eu, ${nome} declaro que estou ciente de todos os termos e condições do aluguel de bicicletas e equipamentos, e aceito os termos de responsabilidade descritos acima. <br> ASSINATURA:_________________________________________.</h4>
 
-
-
-            <br><br><br>
+            <br>
         `;
 
         document.getElementById('rentalInfo').innerHTML = rentalInfo;
