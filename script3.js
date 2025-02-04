@@ -19,20 +19,19 @@
 
         const rentalInfo = `
             <h3>Dados do Locatário</h3>
-            <p><strong>Nome:</strong> ${nome}</p>
-            <p><strong>CPF:</strong> ${cpf}</p>
-            <p><strong>RG:</strong> ${rg}</p>
-            <p><strong>Celular:</strong> ${celular}</p>
-            <p><strong>Horário de Saída:</strong> ${horarioSaida}</p>
-            <p><strong>Horário de Retorno:</strong> ${horarioRetorno}</p>
-            <p><strong>Valor a Pagar:</strong> R$ ${valor}</p>
-            <p><strong>Forma de Pagamento:</strong> ${formaPagamento}</p>
-            <p><strong>Número de Bicicletas:</strong> ${bicicletas}</p>
-            <p><strong>Extensões:</strong> ${extensoes}</p>
-            <p><strong>Carrocelas:</strong> ${carrocelas}</p>
+            <h4><strong>Nome:</strong> ${nome}</h4>
+            <h4><strong>CPF:</strong> ${cpf}</h4>
+            <h4><strong>RG:</strong> ${rg}</h4>
+            <h4><strong>Celular:</strong> ${celular}</h4>
+            <h4><strong>Horário de Saída:</strong> ${horarioSaida}</h4>
+             <h4><strong>Horário de Retorno:</strong> ${horarioRetorno}</h4>
+             <h4><strong>Valor a Pagar:</strong> R$ ${valor}</h4>
+             <h4><strong>Forma de Pagamento:</strong> ${formaPagamento}</h4>
+             <h4><strong>Número de Bicicletas:</strong> ${bicicletas}</h4>
+             <h4><strong>Extensões:</strong> ${extensoes}</h4>
+             <h4><strong>Carrocelas:</strong> ${carrocelas}</h4>
             <hr>
-            <h4>Responsabilidade</h4>
-            <p>
+            <h4>
                 AO CONDUTOR MAIOR DE 14 ANOS;<br>
                 ZELAR PELA INTEGRIDADE DAS BICICLETAS;<br>
                 RESGATE APENAS NA OCIAN, TUPI E MIRIM. TAXA DE RESGATE FORA DOS LOCAIS CITADOS R$15,00.<br>
@@ -40,20 +39,25 @@
                 COBRAMOS POR PNEU FURADO R$10,00.<br>
                 NÃO FAZEMOS DEVOLUÇÃO DE PAGAMENTO, PROIBIDO CONDUZIR EM ESTADO DE EMBRIAGUEZ.<br>
                 ANDAR SOMENTE PELA CICLOVIA EM UMA VELOCIDADE DE NO MÍNIMO 10KM/H, SOB PENA DE PAGAR MULTA DE ....<br>
-                CASO INFRIJA A LEI MUNICIPAL ......... DE PRAIA GRANDE.<br>
+                CASO INFRIJA A LEI MUNICIPAL 1869 DE 07/12/2017 PRAIA GRANDE.<br>
                 SORRIA, VOCÊ ESTÁ SENDO OBSERVADO, BOM PASSEIO!<br><br>
                 ASSUMO, PORTANTO, TODO E QUAISQUER DANOS OU ACIDENTES CAUSADOS AO VEÍCULO, ENQUANTO ESTIVER SOB MINHA RESPONSABILIDADE.<br>
                 ASSIM COMO ME RESPONSABILIZO QUANTO AO RESSARCIMENTO NO CASO DE ROUBO, FURTO E DANOS DIRETOS OU INDIRETOS, TANTO A TERCEIROS QUANTO AO PATRIMÔNIO PÚBLICO, RESPONDENDO SOB AS PENAS DA LEI E ISENTANDO O LOCADOR E PROPRIETÁRIO DAS BICICLETAS (VIC EKO BIKES) CNPJ 41.385.349./0001-79 CIVIL E CRIMINALMENTE DE TODA E QUALQUER RESPONSABILIDADE.
-            </p>
+            </h4>
             <p>Eu, ${nome} declaro que estou ciente de todos os termos e condições do aluguel de bicicletas e equipamentos, e aceito os termos de responsabilidade descritos acima. <br> ASSINATURA:_________________________________________.</p>
+
+
+
+            <br><br><br>
         `;
+
         document.getElementById('rentalInfo').innerHTML = rentalInfo;
 
         // Exibir o código em uma página separada
         const uniqueCode = lastTimer.codigo || 'Código não gerado';
         document.getElementById('codeSection').innerHTML = `
             <h2>Código do Locatário</h2>
-            <p><strong>Código único:</strong> ${uniqueCode}</p>
+            <h5><strong>Código único:</strong> ${uniqueCode}</h5>
         `;
     } else {
         document.getElementById('rentalInfo').innerHTML = `<p>Nenhum dado de locatário encontrado.</p>`;
